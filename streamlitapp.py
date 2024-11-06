@@ -1,46 +1,68 @@
-# --- Title and Introduction ---
-st.title("📊 Interactive Visualizations with Plotly and Streamlit")
+# ... existing imports ...
+import plotly.io as pio
 
-# --- Input for Author Information ---
-st.sidebar.header("🧑‍🏫 Visualization Skill Workshop - Plotly")
-name = st.sidebar.text_input("Enter your name:")
-usn = st.sidebar.text_input("Enter your roll no:")
-instructor_name = st.sidebar.text_input("Course Instructor Name:")
+# Set default plotly theme to dark
+pio.templates.default = "plotly_dark"
 
-# Display author information if provided with dark theme styling
-if name and usn and instructor_name:
-    st.markdown(
-        f"<h5 style='color: #1ABC9C;'>Created by:</h5>"
-        f"<p style='color: #ECF0F1;'>{name} (USN: {usn})</p>"
-        f"<p style='color: #ECF0F1;'>Instructor: {instructor_name}</p>",
-        unsafe_allow_html=True
-    )
-
-# --- Load Dataset ---
-tips = sns.load_dataset('tips')  # Loading the tips dataset
-
-# Display the first few rows of the dataset with customized color styling
-st.write("## 🗂 Dataset Overview")
-st.write(tips.head())
-
-# --- Task 2: Interactive Bar Chart ---
-st.subheader("📅 Task 2: Bar Chart - Average Tip by Day")
-
-# Dark-themed Bar Chart with animation for better visualization
-fig2 = px.bar(
-    tips, x='day', y='tip', color='day',
-    title='Average Tip by Day',
-    labels={'tip': 'Average Tip ($)', 'day': 'Day of the Week'},
-    template='plotly_dark',  # Set to dark template for professional look
-    animation_frame='day',  # Adds a slight movement effect
+# Configure Streamlit page
+st.set_page_config(
+    page_title="Interactive Visualizations",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Customize font and title size for readability
+# Add custom CSS for dark theme
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    .sidebar .sidebar-content {
+        background-color: #262730;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- Title and Introduction with animation ---
+st.markdown("""
+    <h1 style='text-align: center; color: #00CED1; 
+    animation: fadeIn 2s;'>
+    Interactive Visualizations with Plotly and Streamlit
+    </h1>
+    """, unsafe_allow_html=True)
+
+# ... existing sidebar code ...
+
+# Update the bar chart with enhanced styling
+fig2 = px.bar(
+    tips, 
+    x='day', 
+    y='tip', 
+    color='day',
+    title='Average Tip by Day',
+    labels={'tip': 'Average Tip ($)', 'day': 'Day of the Week'},
+    template='plotly_dark',
+    animation_frame=None,  # Remove if you don't want animation
+    hover_data=['total_bill'],  # Add extra info on hover
+)
+
+# Enhance the figure layout
 fig2.update_layout(
-    title_font_size=20,
-    font_color="#ECF0F1",
-    title_font_color="#1ABC9C",
-    hoverlabel=dict(bgcolor="black", font_size=12, font_color="white"),
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    showlegend=True,
+    hovermode='x unified',
+    hoverlabel=dict(bgcolor="white", font_size=12),
+    transition_duration=500
+)
+
+# Add interactivity
+fig2.update_traces(
+    marker_line_color='rgb(8,48,107)',
+    marker_line_width=1.5,
+    opacity=0.8
 )
 
 # Display the chart with animation in Streamlit
