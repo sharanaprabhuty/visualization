@@ -29,4 +29,21 @@ st.subheader("📅 Task 2: Bar Chart - Average Tip by Day")
 # Dark-themed Bar Chart with animation for better visualization
 fig2 = px.bar(
     tips, x='day', y='tip', color='day',
+    title='Average Tip by Day',
+    labels={'tip': 'Average Tip ($)', 'day': 'Day of the Week'},
+    template='plotly_dark',  # Set to dark template for professional look
+    animation_frame='day',  # Adds a slight movement effect
+)
+
+# Customize font and title size for readability
+fig2.update_layout(
+    title_font_size=20,
+    font_color="#ECF0F1",
+    title_font_color="#1ABC9C",
+    hoverlabel=dict(bgcolor="black", font_size=12, font_color="white"),
+)
+
+# Display the chart with animation in Streamlit
+st.plotly_chart(fig2)
+
  
